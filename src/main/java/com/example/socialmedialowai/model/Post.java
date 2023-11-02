@@ -1,9 +1,7 @@
 package com.example.socialmedialowai.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -11,6 +9,8 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
+@Builder
+@AllArgsConstructor
 @Getter @Setter @ToString
 public class Post {
     @Id
@@ -28,4 +28,10 @@ public class Post {
     private LocalDateTime updatedAt;
     @ManyToMany(mappedBy = "likedPosts")
     private Set<UserEntity> likedBy;
+
+    public Post() {
+
+    }
+
+
 }

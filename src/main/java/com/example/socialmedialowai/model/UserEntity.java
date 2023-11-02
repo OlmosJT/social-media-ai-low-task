@@ -1,13 +1,14 @@
 package com.example.socialmedialowai.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.Set;
 
 @Entity
+@Builder
+@AllArgsConstructor
 @Getter @Setter @ToString
 public class UserEntity {
     @Id
@@ -19,6 +20,7 @@ public class UserEntity {
     private String username;
     @Column(unique = true, nullable = false)
     private String email;
+    @JsonIgnore
     private String password;
     @OneToMany(mappedBy = "author")
     private Set<Post> posts;
@@ -35,5 +37,10 @@ public class UserEntity {
             joinColumns = @JoinColumn(name = "follower_id"),
             inverseJoinColumns = @JoinColumn(name = "following_id")
     )
+    @JsonIgnore
     private Set<UserEntity> followers;
+
+    public UserEntity() {
+
+    }
 }

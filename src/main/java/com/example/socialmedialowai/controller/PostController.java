@@ -1,54 +1,114 @@
 package com.example.socialmedialowai.controller;
 
+import com.example.socialmedialowai.dto.PostDTO;
 import com.example.socialmedialowai.dto.PostRequest;
 import com.example.socialmedialowai.model.Post;
+import com.example.socialmedialowai.model.UserEntity;
+import com.example.socialmedialowai.service.PostService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
-@RequestMapping(name = "/api/users/{userId}/posts")
+@RequestMapping("/api/posts")
 public class PostController {
 
-    @PostMapping
-    public Post createPost(@RequestBody PostRequest post) {
-        return null;
+    private final PostService postService;
+
+    public PostController(PostService postService) {
+        this.postService = postService;
+    }
+
+    @PostMapping()
+    public PostDTO createPost(@RequestBody PostRequest postRequest) {
+        Post post = postService.createPost(postRequest);
+        return new PostDTO(
+                post.getId(),
+                post.getTitle(),
+                post.getBody(),
+                post.getAuthor().getUsername(),
+                post.getCreatedAt(),
+                post.getUpdatedAt(),
+                post.getLikedBy().stream().map(UserEntity::getUsername).collect(Collectors.toSet())
+        );
+
     }
 
     @GetMapping("/{id}")
-    public Post getPostById(@PathVariable Long id) {
-        return null;
+    public PostDTO getPostById(@PathVariable Long id) {
+        Post post = postService.getPostById(id);
+        return new PostDTO(
+                post.getId(),
+                post.getTitle(),
+                post.getBody(),
+                post.getAuthor().getUsername(),
+                post.getCreatedAt(),
+                post.getUpdatedAt(),
+                post.getLikedBy().stream().map(UserEntity::getUsername).collect(Collectors.toSet())
+        );
+    }
+
+    @GetMapping()
+    public List<PostDTO> getAllUserPosts(@RequestParam Long userId) {
+        List<Post> posts = postService.getAllPostsByUserId(userId);
+        return posts.stream().map(post -> new PostDTO(
+                post.getId(),
+                post.getTitle(),
+                post.getBody(),
+                post.getAuthor().getUsername(),
+                post.getCreatedAt(),
+                post.getUpdatedAt(),
+                post.getLikedBy().stream().map(UserEntity::getUsername).collect(Collectors.toSet())
+
+        )).collect(Collectors.toList());
     }
 
     @PutMapping("/{id}")
-    public Post updatePost(@PathVariable Long id, @RequestBody Post post) {
-        return null;
+    public PostDTO updatePost(@PathVariable Long id, @RequestBody PostRequest postRequest) {
+        Post post = postService.updatePost(postRequest);
+        return new PostDTO(
+                post.getId(),
+                post.getTitle(),
+                post.getBody(),
+                post.getAuthor().getUsername(),
+                post.getCreatedAt(),
+                post.getUpdatedAt(),
+                post.getLikedBy().stream().map(UserEntity::getUsername).collect(Collectors.toSet())
+        );
     }
 
     @DeleteMapping("/{id}")
     public void deletePost(@PathVariable Long id) {
-//        postRepository.deleteById(id);
+        postService.deletePost(id);
     }
 
-    // Like a post by a user
     @PostMapping("/{postId}/likes")
-    public void likePost(@PathVariable Long postId, @RequestBody Long userId) {
-//        User user = userRepository.findById(userId).orElse(null);
-//        Post post = postRepository.findById(postId).orElse(null);
-//
-//        if (user != null && post != null) {
-//            post.getLikedBy().add(user);
-//            postRepository.save(post);
-//        }
+    public PostDTO likePost(@PathVariable Long postId, @RequestParam Long userId) {
+        Post post = postService.likePost(postId, userId);
+        return new PostDTO(
+                post.getId(),
+                post.getTitle(),
+                post.getBody(),
+                post.getAuthor().getUsername(),
+                post.getCreatedAt(),
+                post.getUpdatedAt(),
+                post.getLikedBy().stream().map(UserEntity::getUsername).collect(Collectors.toSet())
+        );
     }
 
     // Unlike a post by a user
     @DeleteMapping("/{postId}/likes/{userId}")
-    public void unlikePost(@PathVariable Long postId, @PathVariable Long userId) {
-//        User user = userRepository.findById(userId).orElse(null);
-//        Post post = postRepository.findById(postId).orElse(null);
-//
-//        if (user != null && post != null) {
-//            post.getLikedBy().remove(user);
-//            postRepository.save(post);
-//        }
+    public PostDTO unlikePost(@PathVariable Long postId, @PathVariable Long userId) {
+        Post post = postService.unlikePost(postId,userId);
+        return new PostDTO(
+                post.getId(),
+                post.getTitle(),
+                post.getBody(),
+                post.getAuthor().getUsername(),
+                post.getCreatedAt(),
+                post.getUpdatedAt(),
+                post.getLikedBy().stream().map(UserEntity::getUsername).collect(Collectors.toSet())
+        );
     }
 }

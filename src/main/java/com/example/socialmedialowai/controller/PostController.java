@@ -8,9 +8,6 @@ import com.example.socialmedialowai.service.PostService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.LogRecord;
-import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/api/posts")

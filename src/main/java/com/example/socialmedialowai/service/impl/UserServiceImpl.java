@@ -12,9 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
 import static java.util.Collections.emptyList;
-import static java.util.Collections.emptySet;
 
 @Service
 public class UserServiceImpl implements UserService {

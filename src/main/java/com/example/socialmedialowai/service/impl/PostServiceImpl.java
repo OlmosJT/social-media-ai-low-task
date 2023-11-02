@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static java.util.Collections.emptyList;
-import static java.util.Collections.emptySet;
 
 @Service
 public class PostServiceImpl implements PostService {

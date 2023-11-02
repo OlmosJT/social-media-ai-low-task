@@ -2,6 +2,7 @@ package com.example.socialmedialowai.controller;
 
 import com.example.socialmedialowai.dto.UserRequest;
 import com.example.socialmedialowai.model.User;
+import com.example.socialmedialowai.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -9,6 +10,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
+
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @PostMapping("/register")
     public User registerUser(@RequestBody UserRequest user) {

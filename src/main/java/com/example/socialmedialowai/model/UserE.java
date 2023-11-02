@@ -1,12 +1,8 @@
 package com.example.socialmedialowai.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.util.List;
-import java.util.Set;
-
 @Entity
 @Builder
 @AllArgsConstructor

@@ -1,7 +1,6 @@
 package com.example.socialmedialowai.mapper;
 
 import com.example.socialmedialowai.dto.response.PostDTO;
-import com.example.socialmedialowai.dto.response.UserDTO;
 import com.example.socialmedialowai.model.Post;
 
 import java.util.List;

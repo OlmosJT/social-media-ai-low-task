@@ -1,15 +1,15 @@
 package com.example.socialmedialowai.service;
 
 
-import com.example.socialmedialowai.model.User;
+import com.example.socialmedialowai.model.UserEntity;
 import java.util.List;
 
 public interface UserService {
-    List<User> getAllUsers();
-    User getUserById(Long id);
-    User getUserByUsername(String username);
-    User getUserByEmail(String email);
-    User createUser(User user);
-    void updateUser(User user);
+    List<UserEntity> getAllUsers();
+    UserEntity getUserById(Long id);
+    UserEntity getUserByUsername(String username);
+    UserEntity getUserByEmail(String email);
+    UserEntity createUser(UserEntity userEntity);
+    void updateUser(UserEntity userEntity);
     void deleteUser(Long id);
 }

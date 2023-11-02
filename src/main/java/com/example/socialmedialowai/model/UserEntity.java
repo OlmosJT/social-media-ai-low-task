@@ -9,13 +9,15 @@ import java.util.Set;
 
 @Entity
 @Getter @Setter @ToString
-public class User {
+public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String firstName;
     private String lastName;
+    @Column(unique = true, nullable = false)
     private String username;
+    @Column(unique = true, nullable = false)
     private String email;
     private String password;
     @OneToMany(mappedBy = "author")
@@ -33,5 +35,5 @@ public class User {
             joinColumns = @JoinColumn(name = "follower_id"),
             inverseJoinColumns = @JoinColumn(name = "following_id")
     )
-    private Set<User> followers;
+    private Set<UserEntity> followers;
 }

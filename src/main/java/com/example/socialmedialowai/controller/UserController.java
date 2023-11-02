@@ -1,7 +1,7 @@
 package com.example.socialmedialowai.controller;
 
 import com.example.socialmedialowai.dto.UserRequest;
-import com.example.socialmedialowai.model.User;
+import com.example.socialmedialowai.model.UserEntity;
 import com.example.socialmedialowai.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,22 +18,22 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public User registerUser(@RequestBody UserRequest user) {
+    public UserEntity registerUser(@RequestBody UserRequest user) {
         return null;
     }
 
     @GetMapping
-    public List<User> getAllUsers() {
+    public List<UserEntity> getAllUsers() {
         return null;
     }
 
     @GetMapping("/{id}")
-    public User getUserById(@PathVariable Long id) {
+    public UserEntity getUserById(@PathVariable Long id) {
         return null; /*userRepository.findById(id).orElse(null); */
     }
 
     @PutMapping("/{id}")
-    public User updateUser(@PathVariable Long id, @RequestBody UserRequest user) {
+    public UserEntity updateUser(@PathVariable Long id, @RequestBody UserRequest user) {
         return null;
     }
 

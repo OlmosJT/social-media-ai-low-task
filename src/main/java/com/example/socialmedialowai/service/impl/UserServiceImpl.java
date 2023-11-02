@@ -1,6 +1,6 @@
 package com.example.socialmedialowai.service.impl;
 
-import com.example.socialmedialowai.model.User;
+import com.example.socialmedialowai.model.UserEntity;
 import com.example.socialmedialowai.repository.UserRepository;
 import com.example.socialmedialowai.service.UserService;
 import org.springframework.stereotype.Service;
@@ -17,33 +17,33 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getAllUsers() {
+    public List<UserEntity> getAllUsers() {
         return userRepository.findAll();
     }
 
     @Override
-    public User getUserById(Long id) {
+    public UserEntity getUserById(Long id) {
         return userRepository.findById(id).orElse(null);
     }
 
     @Override
-    public User getUserByUsername(String username) {
+    public UserEntity getUserByUsername(String username) {
         return userRepository.findByUsername(username).orElse(null);
     }
 
     @Override
-    public User getUserByEmail(String email) {
+    public UserEntity getUserByEmail(String email) {
         return userRepository.findByEmail(email).orElse(null);
     }
 
     @Override
-    public User createUser(User user) {
-        return userRepository.save(user);
+    public UserEntity createUser(UserEntity userEntity) {
+        return userRepository.save(userEntity);
     }
 
     @Override
-    public void updateUser(User user) {
-        userRepository.save(user);
+    public void updateUser(UserEntity userEntity) {
+        userRepository.save(userEntity);
     }
 
     @Override

@@ -19,13 +19,13 @@ public class Post {
     private String title;
     @Column(length = 1024)
     private String body;
-    @ManyToOne(targetEntity = User.class)
-    @JoinColumn(name = "author_id", nullable = false)
-    private User author;
+    @ManyToOne(targetEntity = UserEntity.class)
+    @JoinColumn(nullable = false)
+    private UserEntity author;
     @CreatedDate
     private LocalDateTime createdAt;
     @LastModifiedDate
     private LocalDateTime updatedAt;
     @ManyToMany(mappedBy = "likedPosts")
-    private Set<User> likedBy;
+    private Set<UserEntity> likedBy;
 }

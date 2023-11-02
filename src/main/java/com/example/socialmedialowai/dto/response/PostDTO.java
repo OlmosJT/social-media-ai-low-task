@@ -1,20 +1,23 @@
-package com.example.socialmedialowai.dto;
+package com.example.socialmedialowai.dto.response;
 
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
 
-public record PostRequest(
+public record PostDTO(
         Long id,
         @NotEmpty
         String title,
         @NotEmpty
         String body,
-        Long author_id,
-        @NotNull
+        String author,
         @DateTimeFormat(pattern = "yyyy-MM-ddTHH:mm:ss")
-        LocalDateTime createdUpdatedAt
+        LocalDateTime createdAt,
+        @DateTimeFormat(pattern = "yyyy-MM-ddTHH:mm:ss")
+        LocalDateTime updatedAt,
+        List<UserDTO> likedBy
 ) {
 }

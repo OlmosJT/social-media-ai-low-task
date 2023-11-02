@@ -1,8 +1,8 @@
-package com.example.socialmedialowai.dto;
+package com.example.socialmedialowai.dto.response;
 
 import jakarta.validation.constraints.*;
 
-public record UserRegisterRequest(
+public record UserDTO(
         Long id,
         @NotNull(message = "firstName is invalid")
         String firstName,
@@ -11,8 +11,6 @@ public record UserRegisterRequest(
         @NotNull(message = "firstName is invalid")
         String username,
         @Email(message = "invalid email")
-        String email,
-        @Size(min = 6, max = 20, message = "Username must be between 6 and 20 characters long")
-        String password
+        String email
 ) {
 }

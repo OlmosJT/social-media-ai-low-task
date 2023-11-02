@@ -1,7 +1,8 @@
 package com.example.socialmedialowai.service.impl;
 
-import com.example.socialmedialowai.dto.UserRegisterRequest;
-import com.example.socialmedialowai.model.UserEntity;
+import com.example.socialmedialowai.dto.request.UserCreationDTO;
+import com.example.socialmedialowai.dto.response.UserDTO;
+import com.example.socialmedialowai.model.UserE;
 import com.example.socialmedialowai.repository.UserRepository;
 import com.example.socialmedialowai.service.UserService;
 import jakarta.persistence.EntityExistsException;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static java.util.Collections.emptyList;
 import static java.util.Collections.emptySet;
 
 @Service
@@ -26,53 +28,54 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserEntity> getAllUsers() {
+    public List<UserE> getAllUsers() {
         return userRepository.findAll();
     }
 
     @Override
-    public UserEntity getUserById(Long id) throws EntityNotFoundException {
+    public UserE getUserById(Long id) throws EntityNotFoundException {
         return userRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 
     @Override
-    public UserEntity getUserByUsername(String username) throws EntityNotFoundException {
+    public UserE getUserByUsername(String username) throws EntityNotFoundException {
         return userRepository.findByUsername(username).orElseThrow(EntityExistsException::new);
     }
 
     @Override
-    public UserEntity getUserByEmail(String email) {
+    public UserE getUserByEmail(String email) {
         return userRepository.findByEmail(email).orElseThrow(EntityExistsException::new);
     }
 
     @Override
-    public UserEntity createUser(UserRegisterRequest request) throws EntityExistsException {
-        if(userRepository.existsByUsernameOrEmail(request.username(), request.email())) {
+    public UserE createUser(UserCreationDTO dto) throws EntityExistsException {
+        if(userRepository.existsByUsernameOrEmail(dto.username(), dto.email())) {
             throw new EntityExistsException("User already exist");
         }
 
-        UserEntity user = UserEntity.builder()
-                .firstName(request.firstName())
-                .lastName(request.lastName())
-                .username(request.username())
-                .email(request.email())
-                .password(passwordEncoder.encode(request.password()))
-                .posts(emptySet())
-                .likedPosts(emptySet())
-                .followers(emptySet())
+        UserE user = UserE.builder()
+                .firstName(dto.firstName())
+                .lastName(dto.lastName())
+                .username(dto.username())
+                .email(dto.email())
+                .password(passwordEncoder.encode(dto.password()))
+                .posts(emptyList())
+                .likedPosts(emptyList())
+                .followers(emptyList())
                 .build();
+
         return userRepository.save(user);
     }
 
     @Override
-    public UserEntity updateUser(UserRegisterRequest request) throws EntityNotFoundException {
-        UserEntity user = userRepository
-                .findById(request.id())
-                .orElseThrow(EntityNotFoundException::new);
-        user.setFirstName(request.firstName());
-        user.setLastName(request.lastName());
-        user.setEmail(request.email());
-        user.setPassword(passwordEncoder.encode(request.password()));
+    public UserE updateUser(Long userId, UserDTO dto) throws EntityNotFoundException {
+        UserE user = userRepository
+                .findById(dto.id())
+                .orElseThrow(() -> new EntityNotFoundException("User not found."));
+
+        user.setFirstName(dto.firstName());
+        user.setLastName(dto.lastName());
+        user.setEmail(dto.email());
         return userRepository.save(user);
     }
 
@@ -84,10 +87,10 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void followUser(Long userId, Long followeeId) throws EntityNotFoundException {
-        UserEntity user = userRepository
+        UserE user = userRepository
                 .findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User not found."));
-        UserEntity followee = userRepository
+        UserE followee = userRepository
                 .findById(followeeId)
                 .orElseThrow(() -> new EntityNotFoundException("Followee id not found."));
 
@@ -98,10 +101,10 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void unfollowUser(Long userId, Long followeeId) throws EntityNotFoundException {
-        UserEntity user = userRepository
+        UserE user = userRepository
                 .findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User not found."));
-        UserEntity followee = userRepository
+        UserE followee = userRepository
                 .findById(followeeId)
                 .orElseThrow(() -> new EntityNotFoundException("Followee id not found."));
 

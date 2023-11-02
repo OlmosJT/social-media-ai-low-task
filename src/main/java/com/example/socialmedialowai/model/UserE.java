@@ -4,13 +4,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
 @Builder
 @AllArgsConstructor
 @Getter @Setter @ToString
-public class UserEntity {
+public class UserE {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,27 +21,20 @@ public class UserEntity {
     private String username;
     @Column(unique = true, nullable = false)
     private String email;
-    @JsonIgnore
     private String password;
     @OneToMany(mappedBy = "author")
-    private Set<Post> posts;
-    @ManyToMany
-    @JoinTable(
-            name = "Likes",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "post_id")
-    )
-    private Set<Post> likedPosts;
+    private List<Post> posts;
+    @ManyToMany(mappedBy = "likedBy")
+    private List<Post> likedPosts;
     @ManyToMany
     @JoinTable(
             name = "Followers",
             joinColumns = @JoinColumn(name = "follower_id"),
             inverseJoinColumns = @JoinColumn(name = "following_id")
     )
-    @JsonIgnore
-    private Set<UserEntity> followers;
+    private List<UserE> followers;
 
-    public UserEntity() {
+    public UserE() {
 
     }
 }

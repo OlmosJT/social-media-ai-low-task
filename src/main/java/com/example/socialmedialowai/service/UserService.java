@@ -1,17 +1,18 @@
 package com.example.socialmedialowai.service;
 
 
-import com.example.socialmedialowai.dto.UserRegisterRequest;
-import com.example.socialmedialowai.model.UserEntity;
+import com.example.socialmedialowai.dto.request.UserCreationDTO;
+import com.example.socialmedialowai.dto.response.UserDTO;
+import com.example.socialmedialowai.model.UserE;
 import java.util.List;
 
 public interface UserService {
-    List<UserEntity> getAllUsers();
-    UserEntity getUserById(Long id);
-    UserEntity getUserByUsername(String username);
-    UserEntity getUserByEmail(String email);
-    UserEntity createUser(UserRegisterRequest userRegisterRequest);
-    UserEntity updateUser(UserRegisterRequest request);
+    List<UserE> getAllUsers();
+    UserE getUserById(Long id);
+    UserE getUserByUsername(String username);
+    UserE getUserByEmail(String email);
+    UserE createUser(UserCreationDTO dto);
+    UserE updateUser(Long userId, UserDTO dto);
     void deleteUser(Long id);
 
     void followUser(Long userId, Long followeeId);

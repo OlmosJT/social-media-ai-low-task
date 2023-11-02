@@ -1,8 +1,9 @@
 package com.example.socialmedialowai.service.impl;
 
-import com.example.socialmedialowai.dto.PostRequest;
+import com.example.socialmedialowai.dto.request.PostCreationDTO;
+import com.example.socialmedialowai.dto.response.PostDTO;
 import com.example.socialmedialowai.model.Post;
-import com.example.socialmedialowai.model.UserEntity;
+import com.example.socialmedialowai.model.UserE;
 import com.example.socialmedialowai.repository.PostRepository;
 import com.example.socialmedialowai.repository.UserRepository;
 import com.example.socialmedialowai.service.PostService;
@@ -10,8 +11,10 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
+import static java.util.Collections.emptyList;
 import static java.util.Collections.emptySet;
 
 @Service
@@ -46,29 +49,32 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Post createPost(PostRequest request) throws EntityNotFoundException {
-        UserEntity author = userRepository.findById(request.author_id())
-                .orElseThrow(() -> new EntityNotFoundException("Author id not found."));
+    @Transactional
+    public Post createPost(PostCreationDTO dto) throws EntityNotFoundException {
+        UserE author = userRepository.findById(dto.authorId())
+                .orElseThrow(() -> new EntityNotFoundException("Author not found."));
 
         Post post = Post.builder()
-                .title(request.title())
-                .body(request.body())
+                .title(dto.title())
+                .body(dto.body())
                 .author(author)
-                .createdAt(request.createdUpdatedAt())
-                .updatedAt(request.createdUpdatedAt())
-                .likedBy(emptySet())
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .likedBy(emptyList())
                 .build();
+
         return postRepository.save(post);
     }
 
     @Override
-    public Post updatePost(PostRequest request) throws EntityNotFoundException {
-        Post post = postRepository.findById(request.id()).orElseThrow(
+    public Post updatePost(Long postId, PostDTO dto) throws EntityNotFoundException {
+        Post post = postRepository.findById(postId).orElseThrow(
                 () -> new EntityNotFoundException("Post not found.")
         );
-        post.setTitle(request.title());
-        post.setBody(request.body());
-        post.setUpdatedAt(request.createdUpdatedAt());
+
+        post.setTitle(dto.title());
+        post.setBody(dto.body());
+        post.setUpdatedAt(dto.createdAt());
         return postRepository.save(post);
     }
 
@@ -83,12 +89,14 @@ public class PostServiceImpl implements PostService {
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new EntityNotFoundException("Post not found.")
         );
-        UserEntity user = userRepository.findById(userId).orElseThrow(
+
+        UserE user = userRepository.findById(userId).orElseThrow(
                 () -> new EntityNotFoundException("User not found.")
         );
-
-        post.getLikedBy().add(user);
-        postRepository.save(post);
+        if(!post.getLikedBy().contains(user)) {
+            post.like(user);
+            postRepository.save(post);
+        }
         return post;
     }
 
@@ -98,12 +106,14 @@ public class PostServiceImpl implements PostService {
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new EntityNotFoundException("Post not found.")
         );
-        UserEntity user = userRepository.findById(userId).orElseThrow(
+        UserE user = userRepository.findById(userId).orElseThrow(
                 () -> new EntityNotFoundException("User not found.")
         );
 
-        post.getLikedBy().remove(user);
-        postRepository.save(post);
+        if(post.getLikedBy().contains(user)) {
+            post.unlike(user);
+            postRepository.save(post);
+        }
         return post;
     }
 }

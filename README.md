@@ -3,6 +3,10 @@
 
 This project is a simple social media application built using Spring Boot, Hibernate, and PostgreSQL. The application allows users to create and view posts, follow other users, and like posts. Each post has a title, body, and author.
 
+### Credentials to Jenkins pipeline: 
+- `administrator/******` (Role-Based Security. Adminstrator)
+- `developer/****** ` (Role-Based Security. Developer who can build and cancel 'Jobs'.)
+
 #### Prerequisites:
 - Java 11 or higher
 - Maven 3.6.3 or higher

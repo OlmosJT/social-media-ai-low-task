@@ -22,5 +22,23 @@ pipeline {
         stage('Build') {
             steps { bat 'gradle build' }
         }
+        stage('Code Coverage') {
+            steps { bat 'gradle clean jacocoTestPrepare install' }
+        }
+        stage('SonarQube Analyze') {
+            environment {
+                scannerHome = tool "sonar-scanner"
+            }
+            steps {
+                withSonarQubeEnv("sonar-server") {
+                    bat 'gradle clean assemble sonar:sonar'
+                }
+            }
+        }
+        stage('Archive Artifacts') {
+            steps {
+                archiveArtifacts artifacts: 'target/*.war', followSymlinks: false
+            }
+        }
     }
 }

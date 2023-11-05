@@ -40,6 +40,7 @@ pipeline {
         }
         stage('Archive Artifacts') {
             steps {
+                bat 'gradlew war'
                 archiveArtifacts artifacts: 'build/libs/*.war', followSymlinks: false
             }
         }

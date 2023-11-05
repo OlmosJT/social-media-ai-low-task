@@ -40,7 +40,12 @@ pipeline {
         }
         stage('Archive Artifacts') {
             steps {
-                archiveArtifacts artifacts: 'target/*.war', followSymlinks: false
+                archiveArtifacts artifacts: 'build/libs/*.war', followSymlinks: false
+            }
+        }
+        stage('Deploy') {
+            steps {
+                deploy adapters: [tomcat9(credentialsId: 'tomcat.admin', path: '', url: 'http://localhost:8181/')], contextPath: 'social-media-low-ai', onFailure: false, war: '**/*.war'
             }
         }
     }

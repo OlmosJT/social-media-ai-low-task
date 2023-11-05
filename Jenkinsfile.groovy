@@ -23,7 +23,11 @@ pipeline {
             steps { bat 'gradle build' }
         }
         stage('Code Coverage') {
-            steps { bat 'gradle clean jacocoTestPrepare install' }
+            steps {
+                bat 'gradle clean'
+                bat 'gradlew jacocoTestReport'
+                bat 'gradlew jacocoTestReportPublish'
+            }
         }
         stage('SonarQube Analyze') {
             environment {

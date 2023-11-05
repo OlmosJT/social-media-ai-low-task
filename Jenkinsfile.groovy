@@ -34,7 +34,7 @@ pipeline {
             }
             steps {
                 withSonarQubeEnv("sonar-server") {
-                    bat 'gradle clean assemble sonar:sonar'
+                    bat '${scannerHome}\\bin\\sonar-scanner.bat -X'
                 }
             }
         }

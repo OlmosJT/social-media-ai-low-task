@@ -26,7 +26,6 @@ pipeline {
             steps {
                 bat 'gradlew clean'
                 bat 'gradlew jacocoTestReport'
-                bat 'gradlew jacocoTestReportPublish'
             }
         }
         stage('SonarQube Analyze') {

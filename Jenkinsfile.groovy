@@ -17,7 +17,7 @@ pipeline {
             steps { checkout scm }
         }
         stage('Test') {
-            steps { bat 'gradle test' }
+            steps { bat 'gradle clean test' }
         }
         stage('Build') {
             steps { bat 'gradle build' }

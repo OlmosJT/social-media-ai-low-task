@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserE createUser(UserCreationDTO dto) throws EntityExistsException {
         if(userRepository.existsByUsernameOrEmail(dto.username(), dto.email())) {
-            throw new EntityExistsException("User already exist");
+            throw new EntityExistsException("User "+ dto.firstName() + " already exist");
         }
 
         UserE user = UserE.builder()

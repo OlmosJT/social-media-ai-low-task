@@ -24,7 +24,7 @@ pipeline {
         }
         stage('Code Coverage') {
             steps {
-                bat 'gradle clean'
+                bat 'gradlew clean'
                 bat 'gradlew jacocoTestReport'
                 bat 'gradlew jacocoTestReportPublish'
             }
